@@ -52,7 +52,9 @@ import Data.OpenApi.Aeson.Compat        (deleteKey)
 import Data.OpenApi.Internal.AesonUtils (AesonDefaultValue (..), HasSwaggerAesonOptions (..),
                                          mkSwaggerAesonOptions, saoAdditionalPairs, saoSubObject,
                                          sopSwaggerGenericParseJSON, sopSwaggerGenericToEncoding,
-                                         sopSwaggerGenericToJSON, sopSwaggerGenericToJSONWithOpts)
+                                         sopSwaggerGenericToJSON, sopSwaggerGenericToJSONWithOpts,
+                                         sopSwaggerGenericToEncodingWithOpts
+                                        )
 import Data.OpenApi.Internal.Utils
 import Generics.SOP.TH                  (deriveGeneric)
 import Data.Version
@@ -1347,7 +1349,8 @@ instance ToJSON SecurityScheme where
 instance ToJSON Schema where
   toJSON = sopSwaggerGenericToJSONWithOpts $
       mkSwaggerAesonOptions "schema" & saoSubObject ?~ "items"
-
+  toEncoding = sopSwaggerGenericToEncodingWithOpts $
+      mkSwaggerAesonOptions "schema" & saoSubObject ?~ "items"
 instance ToJSON Header where
   toJSON = sopSwaggerGenericToJSON
   toEncoding = sopSwaggerGenericToEncoding
